@@ -21,13 +21,20 @@ CREATE TABLE "contentChoice"
 
 SELECT * FROM "contentChoice";
 
-INSERT INTO "contentChoice"
-("name", "latitude", "longitude","homePage")
-VALUES('Los Angeles', 9893, 898372, 'Y')
+INSERT INTO "contentChoice" ("name", "latitude", "longitude","homePage")
+VALUES('University of California, Los Angeles', 34.07956, -118.44494, 'Y');
 
-INSERT INTO "contentChoice"
-("name", "latitude", "longitude")
-VALUES('Los Angeles', 9893, 898372)
+INSERT INTO "contentChoice" ("name", "latitude", "longitude","homePage")
+VALUES('University of California, Berkeley', 37.871853, -122.258423, 'N');
+
+INSERT INTO "contentChoice" ("name", "latitude", "longitude","homePage")
+VALUES('University of California, San Diego', 32.92199, -117.23656, 'N');
+
+INSERT INTO "contentChoice" ("name", "latitude", "longitude","homePage")
+VALUES('University of California, Santa Barbara', 34.413963, -119.848946, 'N');
+
+INSERT INTO "contentChoice" ("name", "latitude", "longitude","homePage")
+VALUES('University of California, Irvine', 33.64099, -117.84437, 'N');
 
 SELECT * FROM "contentChoice";
 

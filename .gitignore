@@ -141,6 +141,7 @@ ipython_config.py
 #API Keys
 config.py
 config.js
+slack_config.py
 
 # MAC System file
 .DS_Store

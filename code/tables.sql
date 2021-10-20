@@ -23,20 +23,20 @@ CREATE TABLE "contentChoice"
 
 SELECT * FROM "contentChoice";
 
-INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
-VALUES('University of California, Los Angeles', 'UCLA', 34.07956, -118.44494, 'Y');
+INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude", "homePage")
+VALUES('University of California, Los Angeles', 'UCLA', 'Los Angeles', 34.07956, -118.44494, 'Y');
 
 INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
-VALUES('University of California, Berkeley', 'UCB', 37.871853, -122.258423, 'N');
+VALUES('University of California, Berkeley', 'UCB', 'Berkeley', 37.871853, -122.258423, 'N');
 
 INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
-VALUES('University of California, San Diego', 'UCSD', 32.92199, -117.23656, 'N');
+VALUES('University of California, San Diego', 'UCSD', 'La Jolla', 32.87888, -117.23593, 'N');
 
 INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
-VALUES('University of California, Santa Barbara', 'UCSB', 34.413963, -119.848946, 'N');
+VALUES('University of California, Santa Barbara', 'UCSB', 'Santa Barbara', 34.413963, -119.848946, 'N');
 
 INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
-VALUES('University of California, Irvine', 'UCI', 33.64099, -117.84437, 'N');
+VALUES('University of California, Irvine', 'UCI', 'Irvine', 33.64099, -117.84437, 'N');
 
 SELECT * FROM "contentChoice";
 
@@ -74,7 +74,9 @@ CREATE TABLE "dailyForecastTB"
 	"retrievalDateTime"	TIMESTAMP
 );
 
-SELECT * FROM "dailyForecastTB";
+SELECT * FROM "dailyForecastTB" ORDER BY "id" ASC, "retrievalDateTime" ASC;
+
+--DELETE FROM "dailyForecastTB"
 
 ---------------------------------------------
 -- Table to load Hour wise Forecast
@@ -101,6 +103,7 @@ CREATE TABLE "hourlyForecastTB"
 	"temperatureTrend"	VARCHAR,
 	"windSpeed"			VARCHAR,
 	"hourWindSpeed"		NUMERIC,
+	"windSpeedUnit"		VARCHAR,
 	"windDirection"		VARCHAR,
 	"icon"				VARCHAR,
 	"shortForecast"		VARCHAR,
@@ -174,6 +177,7 @@ CREATE TABLE "histHourlyForecastTB"
 	"temperatureTrend"	VARCHAR,
 	"windSpeed"			VARCHAR,
 	"hourWindSpeed"		NUMERIC,
+	"windSpeedUnit"		VARCHAR,
 	"windDirection"		VARCHAR,
 	"icon"				VARCHAR,
 	"shortForecast"		VARCHAR,
@@ -231,10 +235,10 @@ $$
 BEGIN  
 	INSERT INTO "histHourlyForecastTB"("id", "responseNumber", "city", "latitude", "longitude", "startDateTime", "startDate", "startTime",		
 										"endDateTime", "endDate", "endTime", "isDaytime", "temperature", "temperatureUnit", "temperatureTrend",	
-										"windSpeed", "hourWindSpeed", "windDirection", "icon", "shortForecast", "retrievalDateTime")  
+										"windSpeed", "hourWindSpeed", "windSpeedUnit", "windDirection", "icon", "shortForecast", "retrievalDateTime")  
 	 VALUES(NEW."id", NEW."responseNumber", NEW."city", NEW."latitude", NEW."longitude", NEW."startDateTime", NEW."startDate", NEW."startTime",		
 			NEW."endDateTime", NEW."endDate", NEW."endTime", NEW."isDaytime", NEW."temperature", NEW."temperatureUnit", NEW."temperatureTrend",	
-			NEW."windSpeed", NEW."hourWindSpeed", NEW."windDirection", NEW."icon", NEW."shortForecast", NEW."retrievalDateTime");  
+			NEW."windSpeed", NEW."hourWindSpeed", NEW."windSpeedUnit", NEW."windDirection", NEW."icon", NEW."shortForecast", NEW."retrievalDateTime");  
 
 RETURN NEW;  
 END;  

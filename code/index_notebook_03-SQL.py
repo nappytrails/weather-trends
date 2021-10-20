@@ -37,6 +37,7 @@ tz =  response["properties"]["timeZone"]
 
 # Make request and store response
 weekly_response = requests.get(weekly_url).json()
+retrievedDateTime = ctime()
 
 # # Find generatedAt string; convert to datetime object
 # call_datetime_str = weekly_response["properties"]["generatedAt"]
@@ -75,7 +76,7 @@ for i, period_forecast in enumerate(period_forecasts):
     period_forecast["windSpeedUnit"] = wind_speed_unit
     period_forecast["latitude"] = lat
     period_forecast["longitude"] = lon
-    period_forecast["retrievalDateTime"] = ctime()
+    period_forecast["retrievalDateTime"] = retrievedDateTime
     
     # Append period_forcast to weekly_forecast list
     weekly_forecast.append(period_forecast)
@@ -137,7 +138,7 @@ for i, hour_forecast in enumerate(hour_forecasts):
     hour_forecast["windSpeedUnit"] = wind_speed_unit
     hour_forecast["latitude"] = lat
     hour_forecast["longitude"] = lon
-    hour_forecast["retrievalDateTime"] = ctime()
+    hour_forecast["retrievalDateTime"] = retrievedDateTime
     
     # Append period_forcast to hourly_forecast list
     hourly_forecast.append(hour_forecast)
@@ -179,8 +180,12 @@ hourly_forecast_df = hourly_forecast_working_df
 weekly_forecast_df.to_sql('dailyForecastTB',connection, if_exists='append', index=False)
 
 # Update the Hourly Forecast table to store Hourwise forecast
-# hourly_forecast_df.to_sql('hourlyForecastTB',connection, if_exists='append', index=False)
+hourly_forecast_df.to_sql('hourlyForecastTB',connection, if_exists='append', index=False)
 
 # Read History Forecast data from the database
-historicDailyForecastDF = pd.read_sql_table('dailyForecastTB', connection)
-historicDailyForecastDF
+DailyForecastTblDF = pd.read_sql_table('dailyForecastTB', connection)
+# print(DailyForecastTblDF)
+
+# Read History Forecast data from the database
+HourlyForecastTblDF = pd.read_sql_table('hourlyForecastTB', connection)
+print(HourlyForecastTblDF)

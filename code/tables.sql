@@ -13,8 +13,9 @@ DROP TABLE IF EXISTS "contentChoice";
 CREATE TABLE "contentChoice"
 (
 	"id"			SERIAL		PRIMARY KEY,
-	"name"			VARCHAR,
+	"locationName"	VARCHAR,
 	"shortName"		VARCHAR,
+	"city"			VARCHAR,
 	"latitude"		NUMERIC,
 	"longitude"		NUMERIC,
 	"homePage"		"flagYesNo"
@@ -22,19 +23,19 @@ CREATE TABLE "contentChoice"
 
 SELECT * FROM "contentChoice";
 
-INSERT INTO "contentChoice" ("name", "shortName", "latitude", "longitude","homePage")
+INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
 VALUES('University of California, Los Angeles', 'UCLA', 34.07956, -118.44494, 'Y');
 
-INSERT INTO "contentChoice" ("name", "shortName", "latitude", "longitude","homePage")
+INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
 VALUES('University of California, Berkeley', 'UCB', 37.871853, -122.258423, 'N');
 
-INSERT INTO "contentChoice" ("name", "shortName", "latitude", "longitude","homePage")
+INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
 VALUES('University of California, San Diego', 'UCSD', 32.92199, -117.23656, 'N');
 
-INSERT INTO "contentChoice" ("name", "shortName", "latitude", "longitude","homePage")
+INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
 VALUES('University of California, Santa Barbara', 'UCSB', 34.413963, -119.848946, 'N');
 
-INSERT INTO "contentChoice" ("name", "shortName", "latitude", "longitude","homePage")
+INSERT INTO "contentChoice" ("locationName", "shortName", "city", "latitude", "longitude","homePage")
 VALUES('University of California, Irvine', 'UCI', 33.64099, -117.84437, 'N');
 
 SELECT * FROM "contentChoice";

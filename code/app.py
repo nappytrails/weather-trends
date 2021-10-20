@@ -4,6 +4,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
+from config import driver, username, password, host, port, database
 
 from flask import Flask, render_template, jsonify, request, redirect
 
@@ -11,7 +12,9 @@ from flask import Flask, render_template, jsonify, request, redirect
 #################################################
 # Database Setup
 #################################################
-engine = create_engine("sqlite:///data/titanic.sqlite")
+
+connection_string = f"{driver}://{username}:{password}@{host}:{port}/{database}"
+engine = create_engine(connection_string)
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -46,16 +49,15 @@ def locationNames():
 
     """Returns the list of choices for dropdown"""
     # Query to fetch the list of location names
-    results = session.query(ContentChoice.locationName, ContentChoice.shortName, 
-                            ContentChoice.latitude, ContentChoice.longitude).all()
-
+    results = session.query(ContentChoice.locationName, ContentChoice.shortName, ContentChoice.latitude, ContentChoice.longitude).all()
+    # results = session.query(ContentChoice).all()
     session.close()
 
     # Convert list of tuples into normal list
     all_location_names = [locationName[0] for locationName in results]
-    all_short_names = [shortName[0] for shortName in results]
-    all_latitudes = [latitude[0] for latitude in results]
-    all_longitudes = [longitude[0] for longitude in results]
+    all_short_names = [shortName[1] for shortName in results]
+    all_latitudes = [str(latitude[2]) for latitude in results]
+    all_longitudes = [str(longitude[3]) for longitude in results]
 
     dropdownChoices = [{
         "locationNames" : all_location_names,
@@ -63,9 +65,12 @@ def locationNames():
         "latitudes" : all_latitudes,
         "longitudes" : all_longitudes
     }]
+    print(results)
+    print("--------------")
+    print(dropdownChoices)
 
     return jsonify(dropdownChoices)
-
+    
 
 # @app.route("/api/pals")
 # def pals():

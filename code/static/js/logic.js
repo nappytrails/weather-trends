@@ -5,6 +5,9 @@
 //   center: [34.0689, -118.4452],
 //   zoom: 14
 // });
+d3.json("/names").then(x => (
+  console.log(x)
+));
 
 var myMap = L.map('map').setView([34.0689, -118.4452], 15);
 

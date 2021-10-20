@@ -2,38 +2,162 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Pet Pals!</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <meta charset="utf-8">
+  <link rel="icon" href="data:,">
+  
+  <title>What's Your Forecast?</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin="" />
+
+  <!-- Leaflet JavaScript code -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+    crossorigin=""></script>
+  
+  <!-- Our CSS -->
+  <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 
-<body>
-    <div class="container">
-        <div class="jumbotron" style="text-align: center">
-            <h1>Pet Pal</h1>
-            <p>Find your pet a pal!</p>
-        </div>
+<body class="overall">
+  
+  <!-- The div where we'll insert our map -->
+  <div id="map"></div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Look at all of the current pet pals!</h2>
-                <div id="plot"></div>
-            </div>
-        </div>
+  <!-- JavaScript file -->
+  <!-- <script type="text/javascript" src="../static/logic.js"></script> -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script type="text/javascript" src="../static/js/logic.js"></script>
 
-        <div class="row">
-            <div class="col-md-12">
-                <h2><a href="/names">Add your pet here!</a></h2>
-            </div>
-        </div>
+  <!-- Blue sidebar-->
+  <div id="sidebar">
+
+    <!-- Dropdown menu-->
+    <div id="uc-dropdown">
+      <h2>Select your campus</h2>
+      <select id="selDataset">
+          <option value="UCLA">University of California, Los Angeles</option>
+          <option value="UCB">University of California, Berkeley</option>
+          <option value="UCSD">University of California, San Diego</option>
+          <option value="UCSB">University of California, Santa Barbara</option>
+          <option value="UCI">University of California, Irvine</option>
+      </select>    
     </div>
 
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- Weekly forecast -->
+    <div id="weekly-forecast">
+      <h2>Your weather this week</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </div>
 
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <!-- Buttons beneath weekly forecast-->
+    <div id = "data-buttons">
+      <button class="button button1">Current<br>Conditions</button>
+      <button class="button button2">Refresh<br>Data</button>
+    </div>
+  </div>
+
+
+  <!-- Top bar with plots -->
+  <div id="topbar">
+    <div id="hourly-forecast">
+      <img src="https://www.allaboutlean.com/wp-content/uploads/2015/08/Cycle-time-graph.png" height="100%" width="150%">
+    </div>
+  </div>
+
+  <!-- Legend -->
+  <div id="legend">
+    <table>
+      <thead style="background-color: white">
+        <td colspan=2><strong>Today's<br>Forecast</strong></td>
+      </thead>
+      <tr style="background-color: white">
+        <td>⭕<br><strong>wind<br>speed<br>(mph)</strong></td>
+        <td>🔴<br><strong>temp<br><br>(°F)<br></strong></td>
+      </tr>
+      <tr>
+        <td style="background-color: palegreen;">&lt;1</td>
+        <td style="background-color: darkblue; color: white;">&lt;25</td>
+      </tr>
+      <tr>
+        <td style="background-color: lightgreen;">1-3</td>
+        <td style="background-color: cornflowerblue;">25-34</td>
+      </tr>
+      <tr>
+        <td style="background-color: #70DB70;">4-7</td>
+        <td style="background-color: paleturquoise;">35-44</td>
+      </tr>
+      <tr>
+        <td style="background-color: #43E043;">8-12</td>
+        <td style="background-color: aquamarine;">45-54</td>
+      </tr>
+      <tr>
+        <td style="background-color: lawngreen;">13-18</td>
+        <td style="background-color: springgreen;">55-64</td>
+      </tr>
+      <tr>
+        <td style="background-color: greenyellow;">19-24</td>
+        <td style="background-color: limegreen;">65-74</td>
+      </tr>
+      <tr>
+        <td style="background-color: yellow;">25-31</td>
+        <td style="background-color: yellowgreen;">75-84</td>
+      </tr>
+      <tr>
+        <td style="background-color: gold;">32-38</td>
+        <td style="background-color: goldenrod;">85-94</td>
+      </tr>
+      <tr>
+        <td style="background-color: orange;">39-46</td>
+        <td style="background-color: darkorange;">95-105</td>
+      </tr>
+      <tr>
+        <td style="background-color: tomato;">47-54</td>
+        <td style="background-color: firebrick; color: white;">&gt;105</td>
+      </tr>
+      <tr>
+        <td style="background-color: orangered;">55-63</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="background-color: red;">64-75</td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="background-color: maroon; color: white;">&gt;75</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+
+  <div>
+    <div id="message-area">
+      <div id="form-area">
+        <h2>Message your students</h2>
+        <form>
+          <textarea name="message" rows="15" cols="44">Help your students greet the day!
+          </textarea>
+          <input type="submit" name="send" id="send-button" value="Send">
+        </form>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

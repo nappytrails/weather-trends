@@ -5,9 +5,37 @@
 //   center: [34.0689, -118.4452],
 //   zoom: 14
 // });
-d3.json("/names").then(x => (
-  console.log(x)
-));
+d3.json("/data2", function(data){
+  
+  let campusLocations = data["locations"];
+  var dropdownOptions = [];
+  for (let i = 0; i < campusLocations.length; i++) {
+    let campus = campusLocations[i];
+    let campusName = campus["locationName"];
+    dropdownOptions.push(campusName);
+  }
+
+  console.log(campusLocations)
+
+  // var testData = ["Option 1", "Option 2", "Option 3"];
+
+  // Use D3 to select dropdown menu
+  var dropdown = d3.select("select");
+
+  // Append one table row `tr` to the table body
+  var options = dropdown
+    .selectAll("option")
+    .data(dropdownOptions).enter()
+    .append("option")
+      .text(function (d) {return d;});
+
+  // // Append one cell for the student name
+  // row.append("td").text(newGrade[0]);
+
+  // // Append one cell for the student grade
+  // row.append("td").text(newGrade[1]);//use data here
+})
+// do not use data anymore
 
 var myMap = L.map('map').setView([34.0689, -118.4452], 15);
 
@@ -52,3 +80,5 @@ var campus = L.circle([34.0689, -118.4452], {
 // Binding a popup to our marker
 campus.bindPopup("<center><b>Current<br>Conditions</b><br><img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW</center>");
 // campus.bindPopup("<img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW").openPopup();
+
+

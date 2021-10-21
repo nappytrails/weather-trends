@@ -5,8 +5,11 @@
 //   center: [34.0689, -118.4452],
 //   zoom: 14
 // });
-d3.json("/data2", function(data){
-  
+d3.json("/data2").then(function(data){
+  console.log(data);
+
+
+
   let campusLocations = data["locations"];
   var dropdownOptions = [];
   for (let i = 0; i < campusLocations.length; i++) {
@@ -15,26 +18,18 @@ d3.json("/data2", function(data){
     dropdownOptions.push(campusName);
   }
 
-  console.log(campusLocations)
-
-  // var testData = ["Option 1", "Option 2", "Option 3"];
-
-  // Use D3 to select dropdown menu
+// Use D3 to select dropdown menu
   var dropdown = d3.select("select");
 
-  // Append one table row `tr` to the table body
+  // Append dropdown options to menu
   var options = dropdown
     .selectAll("option")
     .data(dropdownOptions).enter()
     .append("option")
       .text(function (d) {return d;});
-
-  // // Append one cell for the student name
-  // row.append("td").text(newGrade[0]);
-
-  // // Append one cell for the student grade
-  // row.append("td").text(newGrade[1]);//use data here
-})
+    
+    
+});
 // do not use data anymore
 
 var myMap = L.map('map').setView([34.0689, -118.4452], 15);

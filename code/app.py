@@ -1,10 +1,14 @@
 import numpy as np
-
+import json
+import sys
+import random
+import requests
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-from config import driver, username, password, host, port, database
+from config import driver, username, password, host, port, database 
+from slack_config import webhookURL
 
 from flask import Flask, render_template, jsonify, request, redirect
 
@@ -330,31 +334,44 @@ def site_data():
 
     return jsonify(data)
     
-# @app.route("/api/pals")
-# def pals():
-#     results = db.session.query(Pet.name, Pet.lat, Pet.lon).all()
-
-#     hover_text = [result[0] for result in results]
-#     lat = [result[1] for result in results]
-#     lon = [result[2] for result in results]
-
-#     pet_data = [{
-#         "type": "scattergeo",
-#         "locationmode": "USA-states",
-#         "lat": lat,
-#         "lon": lon,
-#         "text": hover_text,
-#         "hoverinfo": "text",
-#         "marker": {
-#             "size": 50,
-#             "line": {
-#                 "color": "rgb(8,8,8)",
-#                 "width": 1
-#             },
-#         }
-#     }]
-
-#     return jsonify(pet_data)
+@app.route("/slack", methods=['POST'])
+def slackMessage():
+    inputMessage = request.form['message']
+    if __name__ == '__main__':
+        # message = ("Here's the weather for you in message!")
+        title = (f"Here's today's weather update!")
+        slack_data = {
+            "username": "TyphoonsTuesday",
+            "text": "Weather Forecast from TyphoonsTuesday",
+            "icon_emoji": ":tornado:",
+            "channel" : "#general",
+            "attachments": [
+                {
+                    "color": "#9733EE",
+                    "fields": [
+                        {
+                            "title": title,
+                            "value": inputMessage,
+                            "short": "false",
+                        }
+                    ]
+                }
+            ],
+            # "blocks":[{
+            #         "type": "section",
+            #         "text":{
+            #                     "type":"mrkdwn",
+            #                     "text": "*Max Temp*\n75"
+            #         }
+            #     }]
+        }
+        byte_length = str(sys.getsizeof(slack_data))
+        headers = {'Content-Type': "application/json", 'Content-Length': byte_length}
+        response = requests.post(webhookURL, data=json.dumps(slack_data), headers=headers)
+        if response.status_code != 200:
+            raise Exception(response.status_code, response.text)
+    
+    return render_template("index.html")
 
 
 if __name__ == '__main__':

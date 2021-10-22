@@ -5,7 +5,7 @@
 //   center: [34.0689, -118.4452],
 //   zoom: 14
 // });
-d3.json("/names").then(x => (
+d3.json("/data2").then(x => (
   console.log(x)
 ));
 

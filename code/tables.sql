@@ -51,6 +51,7 @@ CREATE TABLE "dailyForecastTB"
 	"responseNumber"	INTEGER,
 	"responseName"		VARCHAR,
 	"city"				VARCHAR,
+	"shortName"			VARCHAR,
 	"latitude"			NUMERIC,
 	"longitude"			NUMERIC,
 	"startDateTime"		TIMESTAMP,
@@ -89,6 +90,7 @@ CREATE TABLE "hourlyForecastTB"
 	"id"	SERIAL		PRIMARY KEY,
 	"responseNumber"	INTEGER,
 	"city"				VARCHAR,
+	"shortName"			VARCHAR,
 	"latitude"			NUMERIC,
 	"longitude"			NUMERIC,
 	"startDateTime"		TIMESTAMP,
@@ -125,6 +127,7 @@ CREATE TABLE "histDailyForecastTB"
 	"responseNumber"	INTEGER,
 	"responseName"		VARCHAR,
 	"city"				VARCHAR,
+	"shortName"			VARCHAR,
 	"latitude"			NUMERIC,
 	"longitude"			NUMERIC,
 	"startDateTime"		TIMESTAMP,
@@ -163,6 +166,7 @@ CREATE TABLE "histHourlyForecastTB"
 	"id"				INTEGER,
 	"responseNumber"	INTEGER,
 	"city"				VARCHAR,
+	"shortName"			VARCHAR,
 	"latitude"			NUMERIC,
 	"longitude"			NUMERIC,
 	"startDateTime"		TIMESTAMP,
@@ -197,11 +201,11 @@ CREATE OR REPLACE FUNCTION logDailyForecastChanges()
   AS  
 $$  
 BEGIN  
-	INSERT INTO "histDailyForecastTB"("id", "responseNumber", "responseName", "city", 	"latitude", "longitude", "startDateTime", 
+	INSERT INTO "histDailyForecastTB"("id", "responseNumber", "responseName", "city", "shortName", "latitude", "longitude", "startDateTime", 
 									  "startDate", "startTime", "endDateTime", "endDate", "endTime", "isDaytime", "temperature", 
 									  "temperatureUnit", "temperatureTrend", "windSpeed", "minWindSpeed", "maxWindSpeed", "windSpeedUnit", 
 									  "windDirection", "icon", "shortForecast", "detailedForecast", "retrievalDateTime")   
-	 VALUES(NEW."id", NEW."responseNumber", NEW."responseName", NEW."city", NEW."latitude", NEW."longitude", NEW."startDateTime", 
+	 VALUES(NEW."id", NEW."responseNumber", NEW."responseName", NEW."city", new."shortName", NEW."latitude", NEW."longitude", NEW."startDateTime", 
 			NEW."startDate", NEW."startTime", NEW."endDateTime", NEW."endDate", NEW."endTime", NEW."isDaytime", NEW."temperature", 
 			NEW."temperatureUnit", NEW."temperatureTrend", NEW."windSpeed", NEW."minWindSpeed", NEW."maxWindSpeed", NEW."windSpeedUnit", 
 			 NEW."windDirection", NEW."icon", NEW."shortForecast", NEW."detailedForecast", NEW."retrievalDateTime");  
@@ -233,10 +237,10 @@ CREATE OR REPLACE FUNCTION logHourlyForecastChanges()
   AS  
 $$  
 BEGIN  
-	INSERT INTO "histHourlyForecastTB"("id", "responseNumber", "city", "latitude", "longitude", "startDateTime", "startDate", "startTime",		
+	INSERT INTO "histHourlyForecastTB"("id", "responseNumber", "city", "shortName", "latitude", "longitude", "startDateTime", "startDate", "startTime",		
 										"endDateTime", "endDate", "endTime", "isDaytime", "temperature", "temperatureUnit", "temperatureTrend",	
 										"windSpeed", "hourWindSpeed", "windSpeedUnit", "windDirection", "icon", "shortForecast", "retrievalDateTime")  
-	 VALUES(NEW."id", NEW."responseNumber", NEW."city", NEW."latitude", NEW."longitude", NEW."startDateTime", NEW."startDate", NEW."startTime",		
+	 VALUES(NEW."id", NEW."responseNumber", NEW."city", NEW."shortName", NEW."latitude", NEW."longitude", NEW."startDateTime", NEW."startDate", NEW."startTime",		
 			NEW."endDateTime", NEW."endDate", NEW."endTime", NEW."isDaytime", NEW."temperature", NEW."temperatureUnit", NEW."temperatureTrend",	
 			NEW."windSpeed", NEW."hourWindSpeed", NEW."windSpeedUnit", NEW."windDirection", NEW."icon", NEW."shortForecast", NEW."retrievalDateTime");  
 

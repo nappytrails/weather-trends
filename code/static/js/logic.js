@@ -6,31 +6,32 @@
 //   zoom: 14
 // });
 d3.json("/data2").then(function(data){
-  console.log(data);
 
-
+  console.log(data["locations"]);
 
   let campusLocations = data["locations"];
   var dropdownOptions = [];
   for (let i = 0; i < campusLocations.length; i++) {
     let campus = campusLocations[i];
     let campusName = campus["locationName"];
-    dropdownOptions.push(campusName);
+    let shortName = campus["shortName"];
+    
+    dropdownOptions.push({"shortName": shortName, "campusName": campusName});
   }
+  // dropdownOptions = data["locations"].map(data => {"shortName": data["shortName"], "locationName": data["locationName"]});
 
 // Use D3 to select dropdown menu
-  var dropdown = d3.select("select");
+  var dropdown = d3.select("#selDataset");
 
   // Append dropdown options to menu
-  var options = dropdown
-    .selectAll("option")
-    .data(dropdownOptions).enter()
-    .append("option")
-      .text(function (d) {return d;});
+  dropdownOptions.forEach(option => {
+    dropdown.append("option").text(option["campusName"]).property("value", option["shortName"]);
+  });
+
+
     
     
-});
-// do not use data anymore
+
 
 var myMap = L.map('map').setView([34.0689, -118.4452], 15);
 
@@ -56,8 +57,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(myMap);
 
 
-// Calculate the offset
-// var offset = myMap.getSize().x*0.05;
 // Then move the map
 myMap.panBy(new L.Point(0, -75), {animate: false});
 
@@ -77,3 +76,5 @@ campus.bindPopup("<center><b>Current<br>Conditions</b><br><img src='https://api.
 // campus.bindPopup("<img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW").openPopup();
 
 
+});
+// do not use data anymore

@@ -29,6 +29,7 @@
   <!-- JavaScript file -->
   <!-- <script type="text/javascript" src="../static/logic.js"></script> -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script type="text/javascript" src="../static/js/logic.js"></script>
 
   <!-- Blue sidebar-->
@@ -79,7 +80,15 @@
   <!-- Top bar with plots -->
   <div id="topbar">
     <div id="hourly-forecast">
-      <img src="https://www.allaboutlean.com/wp-content/uploads/2015/08/Cycle-time-graph.png" height="100%" width="150%">
+      <div id="plot"></div>
+      <select id="weatherdata">
+          <option value="Temperature">Temperature</option>
+          <option value="WindSpeed">Wind Speed</option>
+      </select>
+     
+      <script src="../static/js/logic2.js"></script>      
+      <!-- <img src="https://www.allaboutlean.com/wp-content/uploads/2015/08/Cycle-time-graph.png" height="100%" width="150%"> -->
+      
     </div>
   </div>
 

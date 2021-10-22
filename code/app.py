@@ -373,6 +373,10 @@ def slackMessage():
     
     return render_template("index.html")
 
+@app.route("/temp_ws")
+def temp_ws():
+
+    return render_template("index1.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

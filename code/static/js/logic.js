@@ -20,7 +20,7 @@ d3.json("/data2").then(function(data){
   }
   // dropdownOptions = data["locations"].map(data => {"shortName": data["shortName"], "locationName": data["locationName"]});
 
-// Use D3 to select dropdown menu
+  // Use D3 to select dropdown menu
   var dropdown = d3.select("#selDataset");
 
   // Append dropdown options to menu
@@ -28,12 +28,8 @@ d3.json("/data2").then(function(data){
     dropdown.append("option").text(option["campusName"]).property("value", option["shortName"]);
   });
 
-
-    
-    
-
-
-var myMap = L.map('map').setView([34.0689, -118.4452], 15);
+  // Leaflet map
+  var myMap = L.map('map').setView([34.0689, -118.4452], 15);
 
 // mapURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 
@@ -47,34 +43,51 @@ var myMap = L.map('map').setView([34.0689, -118.4452], 15);
 //     zoomOffset: -1
 // }).addTo(myMap);
 
-L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-  maxZoom: 18,
-  id: 'mapbox/light-v10',
-  tileSize: 512,
-  zoomOffset: -1,
-  accessToken: 'pk.eyJ1IjoibmFwcHl0cmFpbHMiLCJhIjoiY2t1dXBvYXJ1MWlhNzJ1cGphZXJ3MHJ4diJ9.r-J1-mrEKBLhc2V3Kw5wXA'
-}).addTo(myMap);
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/light-v10',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibmFwcHl0cmFpbHMiLCJhIjoiY2t1dXBvYXJ1MWlhNzJ1cGphZXJ3MHJ4diJ9.r-J1-mrEKBLhc2V3Kw5wXA'
+  }).addTo(myMap);
 
 
-// Then move the map
-myMap.panBy(new L.Point(0, -75), {animate: false});
+  // Then move the map
+  myMap.panBy(new L.Point(0, -75), {animate: false});
 
-// Creating a new marker:
-// We pass in some initial options, and then add the marker to the map by using the addTo() method.
-var campus = L.circle([34.0689, -118.4452], {
-  color: "#70DB70",
-  weight: 15,
-  stroke: true,
-  fillColor: "yellowgreen",
-  fillOpacity: 0.5,
-  radius: 550
-}).addTo(myMap);
+  // Creating a new marker:
+  // We pass in some initial options, and then add the marker to the map by using the addTo() method.
+  var campus = L.circle([34.0689, -118.4452], {
+    color: "#70DB70",
+    weight: 15,
+    stroke: true,
+    fillColor: "yellowgreen",
+    fillOpacity: 0.5,
+    radius: 550
+  }).addTo(myMap);
 
-// Binding a popup to our marker
-campus.bindPopup("<center><b>Current<br>Conditions</b><br><img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW</center>");
-// campus.bindPopup("<img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW").openPopup();
+  // Binding a popup to our marker
+  campus.bindPopup("<center><b>Current<br>Conditions</b><br><img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW</center>");
+  // campus.bindPopup("<img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW").openPopup();
 
+  // Weekly forecast
+  let dailyForecasts = data["dailyForecasts"];
+  var forecastPeriods = [];
+  for (let i = 0; i < dailyForecasts.length; i++) {
+    let period = dailyForecasts[i];
+    let periodStartDate = period["daily_startDate"];
+    let periodStartTime = period["daily_startTime"];
+    let periodEndDate = period["daily_endDate"];
+    let periodEndTime = period["daily_endTimes"]
+    let periodIcon = period["daily_icon"]
+    let periodDetailedForecast = period["daily_detailedForecast"]
+    
+    forecastPeriods.push({"periodStartDate": periodStartDate, "periodStartTime": periodStartTime, "periodEndDate": periodEndDate, "periodEndTime": periodEndTime, "periodIcon": periodIcon, "periodDetailedForecast": periodDetailedForecast});
+  }
+  for (let i = 0; i < forecastPeriods.length; i++) {
+    
 
-});
+  }  
 // do not use data anymore
+});

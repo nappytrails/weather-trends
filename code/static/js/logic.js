@@ -31,17 +31,6 @@ d3.json("/data2").then(function(data){
   // Leaflet map
   var myMap = L.map('map').setView([34.0689, -118.4452], 15);
 
-// mapURL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-
-// mapURL = "https://api.mapbox.com/styles/v1/nappytrails/mapbox/streets-v11/tiles/0/0/0?access_token=pk.eyJ1IjoibmFwcHl0cmFpbHMiLCJhIjoiY2t1dXBvYXJ1MWlhNzJ1cGphZXJ3MHJ4diJ9.r-J1-mrEKBLhc2V3Kw5wXA"
-// attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-
-// Adding a tile layer (the background map image) to our map:
-// We use the addTo() method to add objects to our map.
-// L.tileLayer(mapURL, {
-//     attribution: attribution,
-//     zoomOffset: -1
-// }).addTo(myMap);
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -77,17 +66,30 @@ d3.json("/data2").then(function(data){
   for (let i = 0; i < dailyForecasts.length; i++) {
     let period = dailyForecasts[i];
     let periodStartDate = period["daily_startDate"];
-    let periodStartTime = period["daily_startTime"];
-    let periodEndDate = period["daily_endDate"];
-    let periodEndTime = period["daily_endTimes"]
-    let periodIcon = period["daily_icon"]
-    let periodDetailedForecast = period["daily_detailedForecast"]
+    let periodIcon = period["daily_icon"];
+    let periodShortForecast = period["daily_shortForecast"];
+    let periodTemperature = period["daily_temperature"];
+    let periodDetailedForecast = period["daily_detailedForecast"];
     
-    forecastPeriods.push({"periodStartDate": periodStartDate, "periodStartTime": periodStartTime, "periodEndDate": periodEndDate, "periodEndTime": periodEndTime, "periodIcon": periodIcon, "periodDetailedForecast": periodDetailedForecast});
+    forecastPeriods.push({"periodStartDate": periodStartDate, "periodIcon": periodIcon, "periodShortForecast": periodShortForecast, "periodTemperature": periodTemperature, "periodDetailedForecast": periodDetailedForecast});
   }
-  for (let i = 0; i < forecastPeriods.length; i++) {
-    
+  console.log(forecastPeriods);
 
-  }  
+  var weeklyForecast = d3.select("#period-forecasts");
+
+  // forecastPeriods.forEach(period => {
+  //   weeklyForecast.append("p").text(period["periodStartDate"])//.property("value", option["periodDetailedForecast"]);
+  // }
+  for (let i = 0; i < forecastPeriods.length; i++) {
+    console.log(forecastPeriods[i]["periodIcon"]);
+    let auxp = weeklyForecast.append("p");
+    auxp.append("h4").text(forecastPeriods[i]["periodStartDate"]);
+    auxp.append("img").attr("src", forecastPeriods[i]["periodIcon"]);
+    auxp.append("div").text(forecastPeriods[i]["periodShortForecast"])
+    auxp.append("div").text(forecastPeriods[i]["periodTemperature"] + "° F");
+    auxp.append("div").text(forecastPeriods[i]["periodDetailedForecast"])
+
+  } 
+
 // do not use data anymore
 });

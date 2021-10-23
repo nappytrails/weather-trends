@@ -93,6 +93,16 @@ html {
   overflow: auto;
 }
 
+#plot {
+  height: 100%;
+}
+
+#weatherdata {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
 /* legend */
 #legend {
   position: fixed;

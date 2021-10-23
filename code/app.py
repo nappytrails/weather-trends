@@ -7,7 +7,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-from config import driver, username, password, host, port, database
+from config import driver, username, password, host, port, database 
 from slack_config import webhookURL
 
 from flask import Flask, render_template, jsonify, request, redirect
@@ -35,7 +35,6 @@ HourlyForecastTB = Base.classes.hourlyForecastTB
 #################################################
 app = Flask(__name__)
 
-
 #################################################
 # Flask Routes
 #################################################
@@ -47,8 +46,8 @@ def home():
 
 @app.route("/data2")
 def site_data():
-
     """Returns the data for the website"""
+
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -64,9 +63,6 @@ def site_data():
     # Query to fetch the list of Hourly forecast
     resultsHourlyForecast = session.query(HourlyForecastTB).filter_by(shortName = defaultHomeLocation).all()
 
-    session.close()
-
-    # Load Content choice list with the dictionary of location data
     content_choice = []
     for row in resultsLocations:
         choice = {}
@@ -80,18 +76,17 @@ def site_data():
         choice["locationName"] = location
         choice["shortName"] = short_name
         choice["city"] = city
-        choice["latitude"] = latitude
-        choice["longitude"] = longitude
+        choice["latitude"] = str(latitude)
+        choice["longitude"] = str(longitude)
 
         content_choice.append(choice)
 
-    # Load daily forecast list with the dictionary of 
     daily_forecasts = []
     for row in resultsDailyForecast:
         day_forecast = {}
 
         day_forecast["daily_responseNumber"] = int(row.responseNumber)
-        day_forecast["daily_responseName"] = int(row.responseName)
+        day_forecast["daily_responseName"] = row.responseName
         # Since the startDateTime is in GMT, we might not need it for the index.html. So commenting this line
         # day_forecast["daily_startDateTime"] = row.startDateTime
         day_forecast["daily_startDate"] = str(row.startDate)
@@ -107,8 +102,8 @@ def site_data():
         # temperatureTrend always seem to be None and also not used for visualization. So commenting this line
         # day_forecast["daily_temperatureTrend"] = row.temperatureTrend)
         day_forecast["daily_windSpeed"] = row.windSpeed
-        day_forecast["daily_minWindSpeed"] = row.minWindSpeed
-        day_forecast["daily_maxWindSpeed"] = row.maxWindSpeed
+        day_forecast["daily_minWindSpeed"] = int(row.minWindSpeed)
+        day_forecast["daily_maxWindSpeed"] = str(row.maxWindSpeed)
         day_forecast["daily_windSpeedUnit"] = row.windSpeedUnit
         day_forecast["daily_windDirection"] = row.windDirection
         day_forecast["daily_icon"] = row.icon
@@ -139,7 +134,7 @@ def site_data():
         # temperatureTrend always seem to be None and also not used for visualization. So commenting this line
         # hour_forecast["hourly_temperatureTrend"] = row.temperatureTrend
         hour_forecast["hourly_windSpeed"] = row.windSpeed
-        hour_forecast["hourly_hourWindSpeed"] = row.hourWindSpeed
+        hour_forecast["hourly_hourWindSpeed"] = int(row.hourWindSpeed)
         hour_forecast["hourly_windSpeedUnit"] = row.windSpeedUnit
         hour_forecast["hourly_windDirection"] = row.windDirection
         hour_forecast["hourly_icon"] = row.icon
@@ -147,17 +142,18 @@ def site_data():
 
         hourly_forecasts.append(hour_forecast)
 
+    session.close()
+
     data = {"locations" : content_choice, "dailyForecasts" : daily_forecasts, "hourlyForecasts" : hourly_forecasts}
 
     return jsonify(data)
-
-
+    
 @app.route("/slack", methods=['POST'])
-def slackMessage(inputMessage):
+def slackMessage():
     inputMessage = request.form['message']
     if __name__ == '__main__':
         # message = ("Here's the weather for you in message!")
-        title = (f"Here's the weather for you in title")
+        title = (f"Here's today's weather update!")
         slack_data = {
             "username": "TyphoonsTuesday",
             "text": "Weather Forecast from TyphoonsTuesday",
@@ -175,21 +171,26 @@ def slackMessage(inputMessage):
                     ]
                 }
             ],
-            "blocks":[{
-                    "type": "section",
-                    "text":{
-                                "type":"mrkdwn",
-                                "text": "*Max Temp*\n75"
-                    }
-                }]
+            # "blocks":[{
+            #         "type": "section",
+            #         "text":{
+            #                     "type":"mrkdwn",
+            #                     "text": "*Max Temp*\n75"
+            #         }
+            #     }]
         }
         byte_length = str(sys.getsizeof(slack_data))
         headers = {'Content-Type': "application/json", 'Content-Length': byte_length}
         response = requests.post(webhookURL, data=json.dumps(slack_data), headers=headers)
         if response.status_code != 200:
             raise Exception(response.status_code, response.text)
+    
+    return render_template("index.html")
 
+@app.route("/temp_ws")
+def temp_ws():
 
+    return render_template("index1.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

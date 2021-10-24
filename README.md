@@ -1,4 +1,4 @@
-# Weather Trends and forcast
+# Weather Trends and Forecast
 
 
 

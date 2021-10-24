@@ -65,13 +65,14 @@ d3.json("/data2").then(function(data){
   var forecastPeriods = [];
   for (let i = 0; i < dailyForecasts.length; i++) {
     let period = dailyForecasts[i];
+    let periodResponseName = period["daily_responseName"];
     let periodStartDate = period["daily_startDate"];
     let periodIcon = period["daily_icon"];
     let periodShortForecast = period["daily_shortForecast"];
     let periodTemperature = period["daily_temperature"];
     let periodDetailedForecast = period["daily_detailedForecast"];
     
-    forecastPeriods.push({"periodStartDate": periodStartDate, "periodIcon": periodIcon, "periodShortForecast": periodShortForecast, "periodTemperature": periodTemperature, "periodDetailedForecast": periodDetailedForecast});
+    forecastPeriods.push({"periodResponseName": periodResponseName, "periodStartDate": periodStartDate, "periodIcon": periodIcon, "periodShortForecast": periodShortForecast, "periodTemperature": periodTemperature, "periodDetailedForecast": periodDetailedForecast});
   }
   console.log(forecastPeriods);
 
@@ -83,11 +84,13 @@ d3.json("/data2").then(function(data){
   for (let i = 0; i < forecastPeriods.length; i++) {
     console.log(forecastPeriods[i]["periodIcon"]);
     let auxp = weeklyForecast.append("p");
-    auxp.append("h4").text(forecastPeriods[i]["periodStartDate"]);
+    auxp.append("h4").text(forecastPeriods[i]["periodResponseName"] + " (" + forecastPeriods[i]["periodStartDate"] + ")");
     auxp.append("img").attr("src", forecastPeriods[i]["periodIcon"]);
     auxp.append("div").text(forecastPeriods[i]["periodShortForecast"])
     auxp.append("div").text(forecastPeriods[i]["periodTemperature"] + "° F");
     auxp.append("div").text(forecastPeriods[i]["periodDetailedForecast"])
+    auxp.append("hr").attr("style", "")
+
 
   } 
 

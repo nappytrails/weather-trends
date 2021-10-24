@@ -197,6 +197,18 @@ d3.json("/data2").then(function(locationData){
     else return "maroon";
   }
 
+  function chooseFillColor(temperature) {
+    if (temperature < 25) return "darkblue";
+    else if (temperature <= 34) return "cornflowerblue";
+    else if (temperature <= 44) return "paleturquoise";
+    else if (temperature <= 54) return "aquamarine";
+    else if (temperature <= 64) return "springgreen";
+    else if (temperature <= 74) return "limegreen";
+    else if (temperature <= 84) return "yellowgreen";
+    else if (temperature <= 94) return "goldenrod";
+    else if (temperature <= 105) return "darkorange";
+    else return "firebrick";
+  }
 
 
 
@@ -212,7 +224,7 @@ d3.json("/data2").then(function(locationData){
     color: chooseColor(forecastWindSpeed),
     weight: 15,
     stroke: true,
-    fillColor: "yellowgreen",
+    fillColor: chooseFillColor(forecastTemp),
     fillOpacity: 0.5,
     radius: 550
   }).addTo(myMap);

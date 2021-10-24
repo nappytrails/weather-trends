@@ -76,40 +76,43 @@ function loadHomepage(event=null)
     // campus.bindPopup("<img src='https://api.weather.gov/icons/land/day/skc?size=medium'><br><hr><b>Sunny</b><br>Temperature: 75° F<br>Wind Speed: 5mph<br>Wind Direction: NNW").openPopup();
 
     // Weekly forecast
-    let dailyForecasts = data["dailyForecasts"];
-    var forecastPeriods = [];
-    for (let i = 0; i < dailyForecasts.length; i++) {
-      let period = dailyForecasts[i];
-      let periodStartDate = period["daily_startDate"];
-      let periodIcon = period["daily_icon"];
-      let periodShortForecast = period["daily_shortForecast"];
-      let periodTemperature = period["daily_temperature"];
-      let periodDetailedForecast = period["daily_detailedForecast"];
-      
-      forecastPeriods.push({"periodStartDate": periodStartDate, "periodIcon": periodIcon, "periodShortForecast": periodShortForecast, "periodTemperature": periodTemperature, "periodDetailedForecast": periodDetailedForecast});
-    }
-    console.log(forecastPeriods);
+  let dailyForecasts = data["dailyForecasts"];
+  var forecastPeriods = [];
+  for (let i = 0; i < dailyForecasts.length; i++) {
+    let period = dailyForecasts[i];
+    let periodResponseName = period["daily_responseName"];
+    let periodStartDate = period["daily_startDate"];
+    let periodIcon = period["daily_icon"];
+    let periodShortForecast = period["daily_shortForecast"];
+    let periodTemperature = period["daily_temperature"];
+    let periodDetailedForecast = period["daily_detailedForecast"];
+    
+    forecastPeriods.push({"periodResponseName": periodResponseName, "periodStartDate": periodStartDate, "periodIcon": periodIcon, "periodShortForecast": periodShortForecast, "periodTemperature": periodTemperature, "periodDetailedForecast": periodDetailedForecast});
+  }
+  console.log(forecastPeriods);
 
-    var weeklyForecast = d3.select("#period-forecasts");
+  var weeklyForecast = d3.select("#period-forecasts");
 
-    // forecastPeriods.forEach(period => {
-    //   weeklyForecast.append("p").text(period["periodStartDate"])//.property("value", option["periodDetailedForecast"]);
-    // }
-    for (let i = 0; i < forecastPeriods.length; i++) {
-      console.log(forecastPeriods[i]["periodIcon"]);
-      let auxp = weeklyForecast.append("p");
-      auxp.append("h4").text(forecastPeriods[i]["periodStartDate"]);
-      auxp.append("img").attr("src", forecastPeriods[i]["periodIcon"]);
-      auxp.append("div").text(forecastPeriods[i]["periodShortForecast"])
-      auxp.append("div").text(forecastPeriods[i]["periodTemperature"] + "° F");
-      auxp.append("div").text(forecastPeriods[i]["periodDetailedForecast"])
-
+  // forecastPeriods.forEach(period => {
+  //   weeklyForecast.append("p").text(period["periodStartDate"])//.property("value", option["periodDetailedForecast"]);
+  // }
+  for (let i = 0; i < forecastPeriods.length; i++) {
+    console.log(forecastPeriods[i]["periodIcon"]);
+    let auxp = weeklyForecast.append("p");
+    auxp.append("h4").text(forecastPeriods[i]["periodResponseName"] + " (" + forecastPeriods[i]["periodStartDate"] + ")");
+    auxp.append("img").attr("src", forecastPeriods[i]["periodIcon"]);
+    auxp.append("div").text(forecastPeriods[i]["periodShortForecast"])
+    auxp.append("div").text(forecastPeriods[i]["periodTemperature"] + "° F");
+    auxp.append("div").text(forecastPeriods[i]["periodDetailedForecast"])
+    auxp.append("hr").attr("style", "")
     } 
 
   // do not use data anymore
   });
 }
 
+
+=======
 loadDropdown();
 loadHomepage();
 
@@ -120,3 +123,4 @@ document.getElementById("selDataset").addEventListener("change", function(event)
   // console.log(event)
   console.log(dropdownMenu.options[dropdownMenu.options.selectedIndex].value)
 })
+

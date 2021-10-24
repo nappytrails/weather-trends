@@ -26,11 +26,9 @@
   <!-- The div where we'll insert our map -->
   <div id="map"></div>
 
-  <!-- JavaScript file -->
-  <!-- <script type="text/javascript" src="../static/logic.js"></script> -->
+  <!-- JavaScript files -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <!-- <script type="text/javascript" src="../static/js/logic.js"></script> -->
 
   <!-- Blue sidebar-->
   <div id="sidebar">
@@ -38,34 +36,18 @@
     <!-- Dropdown menu-->
     <div id="uc-dropdown">
       <h2>Select your campus</h2>
-      <select id="selDataset">
-          <!-- <option value="UCLA">University of California, Los Angeles</option>
-          <option value="UCB">University of California, Berkeley</option>
-          <option value="UCSD">University of California, San Diego</option>
-          <option value="UCSB">University of California, Santa Barbara</option>
-          <option value="UCI">University of California, Irvine</option> -->
-      </select>    
+      <form action="/data2/homeLocation" method="post">
+        <select id="selDataset" name="campusSelection">
+            <option selected value="default">Select Your Campus</option>
+        </select> 
+
+      </form>   
     </div>
 
     <!-- Weekly forecast -->
     <div id="weekly-forecast">
       <h2>Your weather this week</h2>
       <div id="period-forecasts">
-        <!-- <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </p> -->
       </div>
     </div>
 
@@ -82,12 +64,11 @@
     <div id="hourly-forecast">
       <div id="plot"></div>
       <select id="weatherdata">
-          <option value="Temperature">Temperature</option>
-          <option value="WindSpeed">Wind Speed</option>
+          <option value="Temperature">Hourly Temperature (°F)</option>
+          <option value="WindSpeed">Hourly Wind Speed (mph)</option>
       </select>
      
       <script src="../static/js/logic2.js"></script>      
-      <!-- <img src="https://www.allaboutlean.com/wp-content/uploads/2015/08/Cycle-time-graph.png" height="100%" width="150%"> -->
       
     </div>
   </div>
@@ -96,7 +77,7 @@
   <div id="legend">
     <table>
       <thead style="background-color: white">
-        <td colspan=2><strong>Today's<br>Forecast</strong></td>
+        <td colspan=2 id="legend-title"></td>
       </thead>
       <tr style="background-color: white">
         <td>⭕<br><strong>wind<br>speed<br>(mph)</strong></td>

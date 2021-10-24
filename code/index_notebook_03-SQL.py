@@ -10,14 +10,6 @@ from config import driver, username, password, host, port, database
 from sqlalchemy import create_engine
 from time import ctime
 
-# Connection to the database
-connection_string = f"{driver}://{username}:{password}@{host}:{port}/{database}"
-engine = create_engine(connection_string)
-connection = engine.connect()
-
-# Table "contentChoice" has the list of locations that are being used in this App.
-contentChoiceDF = pd.read_sql_table('contentChoice', connection)
-
 city = "Los Angeles"
 lat = 34.0522
 lon = -118.2437
@@ -172,9 +164,9 @@ hourly_forecast_df = hourly_forecast_working_df
 # hourly_forecast_df
 
 # Connection to database
-# connection_string = f"{driver}://{username}:{password}@{host}:{port}/{database}"
-# engine = create_engine(connection_string)
-# connection = engine.connect()
+connection_string = f"{driver}://{username}:{password}@{host}:{port}/{database}"
+engine = create_engine(connection_string)
+connection = engine.connect()
 
 # Update the Daily Forecast table to store Day level forecast
 weekly_forecast_df.to_sql('dailyForecastTB',connection, if_exists='append', index=False)
@@ -188,4 +180,3 @@ DailyForecastTblDF = pd.read_sql_table('dailyForecastTB', connection)
 
 # Read History Forecast data from the database
 HourlyForecastTblDF = pd.read_sql_table('hourlyForecastTB', connection)
-print(HourlyForecastTblDF)

@@ -38,13 +38,12 @@
     <!-- Dropdown menu-->
     <div id="uc-dropdown">
       <h2>Select your campus</h2>
-      <select id="selDataset">
-          <!-- <option value="UCLA">University of California, Los Angeles</option>
-          <option value="UCB">University of California, Berkeley</option>
-          <option value="UCSD">University of California, San Diego</option>
-          <option value="UCSB">University of California, Santa Barbara</option>
-          <option value="UCI">University of California, Irvine</option> -->
-      </select>    
+      <form action="/data2/homeLocation" method="post">
+        <select id="selDataset" name="campusSelection">
+            <option selected value="default">Select Your Campus</option>
+        </select> 
+
+      </form>   
     </div>
 
     <!-- Weekly forecast -->
@@ -82,8 +81,8 @@
     <div id="hourly-forecast">
       <div id="plot"></div>
       <select id="weatherdata">
-          <option value="Temperature">Temperature</option>
-          <option value="WindSpeed">Wind Speed</option>
+          <option value="Temperature">Hourly Temperature</option>
+          <option value="WindSpeed">Hourly Wind Speed</option>
       </select>
      
       <script src="../static/js/logic2.js"></script>      

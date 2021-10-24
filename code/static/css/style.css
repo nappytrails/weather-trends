@@ -51,6 +51,13 @@ html {
   overflow: auto;
 }
 
+.weather-divider {
+  height: 0px;
+  border-bottom: dotted;
+  border-top: none;
+  color: dodgerblue;
+}
+
 #data-buttons {
   position: absolute;
   bottom: 10px;

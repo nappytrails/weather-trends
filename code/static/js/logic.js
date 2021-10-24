@@ -94,7 +94,7 @@ d3.json("/data2").then(function(locationData){
   let currentDate =  currentDateObj.toString()
   let currentHour = new Date().getHours();
   let legendTitle = d3.select("#legend-title");
-  if (currentHour > 6 && currentHour < 18) {
+  if (currentHour >= 6 && currentHour < 18) {
     isDay = true;
     legendTitle.append("strong").text("Today's");
     legendTitle.append("br");
@@ -107,49 +107,98 @@ d3.json("/data2").then(function(locationData){
     legendTitle.append("strong").text("Forecast");
   }
   
-  for (let i=0; i < dailyForecasts.lenth; i++) {
-    let daily_startDate = dailyForecasts[i]["daily_startDate"];
-    let daily_endDate = dailyForecasts[i]["daily_endDate"];
-    let daily_minWindSpeed = dailyForecasts[i]["daily_minWindSpeed"];
-    let daily_maxWindSpeed = dailyForecasts[i]["daily_minWindSpeed"];
+  for (let i=0; i < dailyForecasts.length; i++) {
+    var daily_startDate = dailyForecasts[i]["daily_startDate"];
+    var daily_endDate = dailyForecasts[i]["daily_endDate"];
+    var daily_minWindSpeed = dailyForecasts[i]["daily_minWindSpeed"];
+    var daily_maxWindSpeed = dailyForecasts[i]["daily_maxWindSpeed"];
+    var daily_isDaytime = dailyForecasts[i]["daily_isDaytime"];
+    // var forecastWindSpeed = 0
+    // var forecastTemp = 0
 
-    if (isDay == true && daily_endDate == currentDate && daily_maxWindSpeed != "None") {
-      let forecastWindSpeed = parseInt(daily_maxWindSpeed);
-      let forecastTemp = dailyForecasts[i]["daily_temperature"];
+    // if (currentDate == daily_endDate) {
+    //   console.log("A string");
+    //   console.log(daily_minWindSpeed);
+    //   console.log(parseInt(daily_maxWindSpeed));
+    //   console.log(currentDate)
+    //   console.log(daily_endDate);
+    //   // console.log(daily_startDate);
+    //   console.log(daily_isDaytime);
+    // }
+
+    if (isDay == true) {
+      if (daily_isDaytime == true && daily_endDate == currentDate && daily_maxWindSpeed != "None") {
+        console.log("Day: First if statement")
+        var forecastWindSpeed = parseInt(daily_maxWindSpeed);
+        var forecastTemp = dailyForecasts[i]["daily_temperature"];
+        console.log(dailyForecasts[i]["daily_responseNumber"])
+      }
+      else if (daily_isDaytime == true && daily_endDate == currentDate && daily_maxWindSpeed == "None") {
+        console.log("Day: Second if statement")
+        var forecastWindSpeed = daily_minWindSpeed;
+        var forecastTemp = dailyForecasts[i]["daily_temperature"];
+      }
+      else {
+        console.log("Day: Else statement")
+        // forecastWindSpeed = "FWS"
+        // forecastTemp = "FT"
+      }
     }
-    else if (isDay == true && daily_endDate == currentDate && daily_maxWindSpeed == "None") {
-      let forecastWindSpeed = daily_minWindSpeed;
-      let forecastTemp = dailyForecasts[i]["daily_temperature"];
-    }
-    else if (isDay == false && daily_startDate == currentDate && daily_maxWindSpeed != "None") {
-      let forecastWindSpeed = parseInt(daily_maxWindSpeed);
-      let forecastTemp = dailyForecasts[i]["daily_temperature"];
-    }
-    else if (isDay == false && daily_startDate == currentDate && daily_maxWindSpeed == "None") {
-      let forecastWindSpeed = daily_minWindSpeed;
-      let forecastTemp = dailyForecasts[i]["daily_temperature"];
-    }
-    else if (isDay == false && daily_endDate == currentDate && daily_maxWindSpeed != "None") {
-      let forecastWindSpeed = parseInt(daily_maxWindSpeed);
-      let forecastTemp = dailyForecasts[i]["daily_temperature"];
-    }
-    else if (isDay == false && daily_endDate == currentDate && daily_maxWindSpeed == "None") {
-      let forecastWindSpeed = daily_minWindSpeed;
-      let forecastTemp = dailyForecasts[i]["daily_temperature"];
-    }
+
+    else {
+      if (daily_isDaytime == false && daily_startDate == currentDate && daily_maxWindSpeed != "None") {
+        console.log("Night: First if statement")
+        var forecastWindSpeed = parseInt(daily_maxWindSpeed);
+        var forecastTemp = dailyForecasts[i]["daily_temperature"];
+      }
+      else if (daily_isDaytime == false && daily_startDate == currentDate && daily_maxWindSpeed == "None") {
+        console.log("Night: Second if statement")
+        var forecastWindSpeed = daily_minWindSpeed;
+        var forecastTemp = dailyForecasts[i]["daily_temperature"];
+      }
+      else if (daily_isDaytime == false && daily_endDate == currentDate && daily_maxWindSpeed != "None") {
+        console.log("Night: Third if statement")
+        var forecastWindSpeed = parseInt(daily_maxWindSpeed);
+        var forecastTemp = dailyForecasts[i]["daily_temperature"];
+      }
+      else if (daily_isDaytime == false && daily_endDate == currentDate && daily_maxWindSpeed == "None") {
+        console.log("Night: Fourth if statement")
+        var forecastWindSpeed = daily_minWindSpeed;
+        var forecastTemp = dailyForecasts[i]["daily_temperature"];
+      }
+      else {
+        console.log("Night: Else statement")
+        // forecastWindSpeed = "FWS"
+        // forecastTemp = "FT"
+      }
+    }  
+
+      // console.log(currentDate);
+    console.log(forecastWindSpeed);
+    console.log(forecastTemp);
+
   }
-  console.log(currentDate);
-  // console.log(forecastWindSpeed);
-  // console.log(forecastTemp);
 
 
-
-
-
-  // }
   // The function that will determine the color of a neighborhood based on the borough that it belongs to
-  // function chooseColor(windSpeed) {
-  //   if 
+  function chooseColor(windSpeed) {
+    if (windSpeed < 1) return "palegreen";
+    else if (windSpeed <= 3) return "lightgreen";
+    else if (windSpeed <= 7) return "#70DB70";
+    else if (windSpeed <= 12) return "#43E043";
+    else if (windSpeed <= 18) return "lawngreen";
+    else if (windSpeed <= 24) return "greenyellow";
+    else if (windSpeed <= 31) return "yellow";
+    else if (windSpeed <= 38) return "gold";
+    else if (windSpeed <= 46) return "orange";
+    else if (windSpeed <= 54) return "tomato";
+    else if (windSpeed <= 63) return "orangered";
+    else if (windSpeed <= 75) return "red";
+    else return "maroon";
+  }
+
+
+
 
   //   if (borough == "Brooklyn") return "yellow";
   //   else if (borough == "Bronx") return "red";
@@ -160,7 +209,7 @@ d3.json("/data2").then(function(locationData){
 
   // Creating a new marker:
   var campus = L.circle([lat, lon], {
-    color: "#70DB70",
+    color: chooseColor(forecastWindSpeed),
     weight: 15,
     stroke: true,
     fillColor: "yellowgreen",

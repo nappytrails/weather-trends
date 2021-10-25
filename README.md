@@ -27,11 +27,14 @@ For example, if the road condition is bad due to the weather, staffs can used ou
 - JSON
 - HTML/CSS
 - JS
+- JQuery
+- Python
 - Pandas
 - D3
 - PostgreSQL
 - Flask
 - Plotly
+- Leaflet
 - AWS
 - Slack Incomeing-Webhook Extension
 

@@ -36,7 +36,7 @@ d3.json("/data2").then(function(data){
 // do not use data anymore
 });
 
-d3.json("/data2").then(function(locationData){
+d3.json("/data2/homeLocation").then(function(locationData){
 
   // Your weather this week
   // Weekly forecast

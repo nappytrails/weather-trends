@@ -4,13 +4,14 @@ import sys
 import random
 import requests
 import sqlalchemy
+import os
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 from config import driver, username, password, host, port, database 
 from slack_config import webhookURL
-
-from flask import Flask, render_template, jsonify, request, redirect
+from refresh_from_api import refresh_from_api
+from flask import Flask, render_template, jsonify, request, redirect, send_from_directory
 
 
 #################################################
@@ -44,11 +45,17 @@ app = Flask(__name__)
 def home():
     return render_template("index.html")
 
+@app.route('/favicon.ico') 
+def favicon(): 
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route("/data2")
-@app.route("/data2/<homeLocation>")
+@app.route("/data2/<homeLocation>", methods=["GET", "POST"])
 def site_data(homeLocation=None):
     """Returns the data for the website"""
-    homeLocation = homeLocation or "UCLA"
+
+    homeLocation = request.form.get("campus") or "UCLA"
+
     # Create our session (link) from Python to the DB
     session = Session(engine)
 
@@ -156,6 +163,12 @@ def site_data(homeLocation=None):
 
     return jsonify(data)
     
+@app.route("/refresh_data")
+def refreshData():
+    refresh_from_api()
+    return render_template("index.html", code=302)
+
+
 @app.route("/slack", methods=['POST'])
 def slackMessage():
     inputMessage = request.form['message']
@@ -193,12 +206,12 @@ def slackMessage():
         if response.status_code != 200:
             raise Exception(response.status_code, response.text)
     
-    return render_template("index.html")
+    return render_template("index.html", code=302)
 
-@app.route("/temp_ws")
-def temp_ws():
+# @app.route("/temp_ws")
+# def temp_ws():
 
-    return render_template("index1.html")
+#     return render_template("index1.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="utf-8">
-  <link rel="icon" href="data:,">
+  <!-- <link rel="icon" href="data:,"> -->
+  <link rel="shortcut icon" href="../static/favicon.ico">
   
   <title>What's Your Forecast?</title>
 
@@ -16,9 +17,24 @@
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
-  
+
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+
+  <!-- Connect to JQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- JQuery code to get value from campus dropdown menu-->
+  <script>
+    $(document).ready(function(){
+      $("#selDataset").change(function(){
+        var campus = $("#selDataset").val();
+        $.post("/data2/<homeLocation>", campus, function(data,status){ alert("Data: " + data + "\nStatus: " + status);});
+        alert(campus);
+      });
+    });
+    </script>
+
 </head>
 
 <body class="overall">
@@ -54,7 +70,9 @@
     <!-- Buttons beneath weekly forecast-->
     <div id = "data-buttons">
       <button class="button button1">Current<br>Conditions</button>
-      <button class="button button2">Refresh<br>Data</button>
+      <form action="/refresh_data">
+        <button type="submit" class="button button2">Refresh<br>Data</button>
+      </form>
     </div>
   </div>
 

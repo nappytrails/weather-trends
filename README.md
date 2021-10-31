@@ -21,7 +21,7 @@ The purpose of this project is to create a website for school staffs to have an 
 
 For example, if the road condition is bad due to the weather, staffs can used our website to quickly make decision and alert the parents all on our website. We provide dropdown menus to pin locations easily and hourly and weekly weather trends by line charts and map. 
 
-## **Libraries / Requirments:**
+## **Libraries / Requirements:**
 ---
 
 - JSON
@@ -36,7 +36,7 @@ For example, if the road condition is bad due to the weather, staffs can used ou
 - Plotly
 - Leaflet
 - AWS
-- Slack Incomeing-Webhook Extension
+- Slack Incoming-Webhook Extension
 
 ## Data Source 
 ---

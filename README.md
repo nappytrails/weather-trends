@@ -19,6 +19,8 @@
 
 The purpose of this project is to create a website for school staffs to have an easy-to-use tools to alert parents on weather forcasts and promptly update them with newly updated information. 
 
+School location(s), City and associated Longitude/Latitude values are configurable. Based on the list of schools in the DB table, Weather data is loaded and used for visualization.
+
 For example, if the road condition is bad due to the weather, staffs can used our website to quickly make decision and alert the parents all on our website. We provide dropdown menus to pin locations easily and hourly and weekly weather trends by line charts and map. 
 
 ## **Libraries / Requirements:**

@@ -9,6 +9,9 @@ from pprint import pprint
 from config import driver, username, password, host, port, database
 from sqlalchemy import create_engine
 from time import ctime
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
+from sqlalchemy import create_engine, func
 
 def refresh_from_api():
 
@@ -177,12 +180,35 @@ def refresh_from_api():
     connection_string = f"{driver}://{username}:{password}@{host}:{port}/{database}"
     engine = create_engine(connection_string)
     connection = engine.connect()
+    session = Session(engine)
+
+    # reflect an existing database into a new model
+    Base = automap_base()
+
+    # reflect the tables
+    Base.prepare(engine, reflect=True)
+
+    # Save reference to the tables
+    DailyForecastTB = Base.classes.dailyForecastTB
+    HourlyForecastTB = Base.classes.hourlyForecastTB
+
+    # Clear tables befor loading new forecast data
+    session.query(DailyForecastTB).delete()
+    session.query(HourlyForecastTB).delete()
+
+    session.commit()
+
+    # print("Data cleared")
 
     # Update the Daily Forecast table to store Day level forecast
     weekly_forecast_full.to_sql('dailyForecastTB',connection, if_exists='append', index=False)
 
     # Update the Hourly Forecast table to store Hourwise forecast
     hourly_forecast_full.to_sql('hourlyForecastTB',connection, if_exists='append', index=False)
+
+    session.commit()
+
+    # print("Data loaded")
 
     # Read History Forecast data from the database
     DailyForecastTblDF = pd.read_sql_table('dailyForecastTB', connection)

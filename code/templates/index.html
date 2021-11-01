@@ -29,7 +29,7 @@
     $(document).ready(function(){
       $("#selDataset").change(function(){
         var campus = $("#selDataset").val();
-        $.post("/data2/<homeLocation>", campus, function(data,status){ alert("Data: " + data + "\nStatus: " + status);});
+        $.post("/data2/<homeLocation>", campus, function(data,status){ alert("Data: " + data + "\nStatus: " + status + "\nCampus: " + campus);});
         alert(campus);
       });
     });

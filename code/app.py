@@ -23,6 +23,7 @@ engine = create_engine(connection_string)
 
 # reflect an existing database into a new model
 Base = automap_base()
+
 # reflect the tables
 Base.prepare(engine, reflect=True)
 
@@ -191,14 +192,7 @@ def slackMessage():
                         }
                     ]
                 }
-            ],
-            # "blocks":[{
-            #         "type": "section",
-            #         "text":{
-            #                     "type":"mrkdwn",
-            #                     "text": "*Max Temp*\n75"
-            #         }
-            #     }]
+            ]
         }
         byte_length = str(sys.getsizeof(slack_data))
         headers = {'Content-Type': "application/json", 'Content-Length': byte_length}
@@ -207,11 +201,6 @@ def slackMessage():
             raise Exception(response.status_code, response.text)
     
     return render_template("index.html", code=302)
-
-# @app.route("/temp_ws")
-# def temp_ws():
-
-#     return render_template("index1.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

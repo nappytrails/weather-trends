@@ -76,7 +76,7 @@ def site_data(homeLocation=None):
     # Query to fetch the list of Daily forecast for 7 days
     resultsDailyForecast = session.query(DailyForecastTB).all()
 
-    # Query to fetch the list of Hourly forecast
+    # Query to fetch the list of Hourly forecast for 7 days
     resultsHourlyForecast = session.query(HourlyForecastTB).all()
 
     content_choice = []

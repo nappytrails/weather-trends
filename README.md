@@ -23,7 +23,28 @@ School location(s), City and associated Longitude/Latitude values are configurab
 
 For example, if the road condition is bad due to the weather, staffs can used our website to quickly make decision and alert the parents all on our website. We provide dropdown menus to pin locations easily and hourly and weekly weather trends by line charts and map. 
 
-## **Libraries / Requirements:**
+## **Configuration Requirements:**
+---
+
+Application expects 2 configurations.
+
+    1. config.py - with details like below. Provide Username, Password, Host and Port.
+            driver='postgresql'
+            username='<>'
+            password='<>'
+            host = "<>"
+            port = "<>"
+            database = "postgres" 
+
+    2. slack_config.py
+            webhookURL = '<>'
+        
+Reference URL to configure slack webbook 
+        
+- https://medium.com/@sharan.aadarsh/sending-notification-to-slack-using-python-8b71d4f622f3
+
+
+## **Library Requirements:**
 ---
 
 - JSON

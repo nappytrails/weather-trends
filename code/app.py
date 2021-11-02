@@ -55,6 +55,10 @@ def favicon():
 def site_data(homeLocation=None):
     """Returns the data for the website"""
 
+    print("showing values")
+    print(request.form.get("campus"))
+    print(homeLocation)
+    
     homeLocation = request.form.get("campus") or "UCLA"
 
     # Create our session (link) from Python to the DB
@@ -67,18 +71,18 @@ def site_data(homeLocation=None):
     #     homeLocation = session.query(ContentChoice.shortName).filter_by(homePage = 'Y').one()
     #     print(homeLocation)
 
-    # # Query to fetch the list of Daily forecast for 7 days
-    # resultsDailyForecast = session.query(DailyForecastTB).filter_by(shortName = homeLocation).all()
-
-    # # Query to fetch the list of Hourly forecast
-    # resultsHourlyForecast = session.query(HourlyForecastTB).filter_by(shortName = homeLocation).all()
-    
     # Query to fetch the list of Daily forecast for 7 days
-    resultsDailyForecast = session.query(DailyForecastTB).all()
+    resultsDailyForecast = session.query(DailyForecastTB).filter_by(shortName = homeLocation).all()
 
-    # Query to fetch the list of Hourly forecast for 7 days
-    resultsHourlyForecast = session.query(HourlyForecastTB).all()
+    # Query to fetch the list of Hourly forecast
+    resultsHourlyForecast = session.query(HourlyForecastTB).filter_by(shortName = homeLocation).all()
+    
+    # # Query to fetch the list of Daily forecast for 7 days
+    # resultsDailyForecast = session.query(DailyForecastTB).all()
 
+    # # Query to fetch the list of Hourly forecast for 7 days
+    # resultsHourlyForecast = session.query(HourlyForecastTB).all()
+    
     content_choice = []
     for row in resultsLocations:
         choice = {}

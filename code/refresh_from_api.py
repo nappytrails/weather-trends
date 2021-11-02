@@ -15,14 +15,47 @@ from sqlalchemy import create_engine, func
 
 def refresh_from_api():
 
-    locations = [("Los Angeles", 34.0522, -118.2437),("Berkeley", 37.871853, -122.258423), ("La Jolla", 32.87888, -117.23593), ("Santa Barbara", 34.413963, -119.848946), ("Irvine", 33.64099, -117.84437)]
+    #Connection string
+    connection_string = f"{driver}://{username}:{password}@{host}:{port}/{database}"
+    engine = create_engine(connection_string)
+
+    # reflect an existing database into a new model
+    Base = automap_base()
+
+    # reflect the tables
+    Base.prepare(engine, reflect=True)
+
+    session = Session(engine)
+
+    ContentChoice = Base.classes.contentChoice
+
+    # Table "contentChoice" has the list of locations that are being used in this App.
+    resultsLocations = session.query(ContentChoice).all()
+    session.close()
+
+    # locations = [("Los Angeles", 34.0522, -118.2437),("Berkeley", 37.871853, -122.258423), ("La Jolla", 32.87888, -117.23593), ("Santa Barbara", 34.413963, -119.848946), ("Irvine", 33.64099, -117.84437)]
     weekly_forecast_full = pd.DataFrame()
     hourly_forecast_full = pd.DataFrame()
-    
+
+    locations = []
+
+    for row in resultsLocations:
+        location = ()
+
+        city_name = row.city
+        latitude = float(row.latitude)
+        longitude = float(row.longitude)
+        short_name = row.shortName
+
+        location = (city_name, latitude, longitude, short_name)
+
+        locations.append(location)
+
     for location in locations:
         city = location[0]
         lat = location[1]
         lon = location[2]
+        shortname = location[3]
 
         ## Get initial endpoint for location
         # Assign initial api url to a variable
@@ -69,6 +102,7 @@ def refresh_from_api():
 
             # Append dates and times to period_forecast dictionary
             period_forecast["city"] = city
+            period_forecast['shortName'] = shortname
             period_forecast["startDate"] = start_date
             period_forecast["start_time"] = start_time
             period_forecast["endDate"] = end_date
@@ -102,7 +136,7 @@ def refresh_from_api():
         weekly_forecast_working_df.rename(columns={"startTime":"startDateTime", "endTime":"endDateTime", "start_time":"startTime", "end_time":"endTime", "number":"responseNumber", "name":"responseName"}, inplace=True)
 
         # Rearange columns of dataframe
-        weekly_forecast_working_df = weekly_forecast_working_df[['responseNumber', 'responseName', 'city', 'latitude', 'longitude','startDateTime', 'startDate', 'startTime', 'endDateTime', 'endDate', 'endTime', 'isDaytime', 'temperature', 'temperatureUnit', 'temperatureTrend', 'windSpeed','minWindSpeed', 'maxWindSpeed', 'windSpeedUnit', 'windDirection', 'icon', 'shortForecast', 'detailedForecast', 'retrievalDateTime']]
+        weekly_forecast_working_df = weekly_forecast_working_df[['responseNumber', 'responseName', 'city', 'shortName', 'latitude', 'longitude','startDateTime', 'startDate', 'startTime', 'endDateTime', 'endDate', 'endTime', 'isDaytime', 'temperature', 'temperatureUnit', 'temperatureTrend', 'windSpeed','minWindSpeed', 'maxWindSpeed', 'windSpeedUnit', 'windDirection', 'icon', 'shortForecast', 'detailedForecast', 'retrievalDateTime']]
 
         # Copy working dataframe to final dataframe
         weekly_forecast_df = weekly_forecast_working_df
@@ -132,6 +166,7 @@ def refresh_from_api():
 
             # Append dates and times to hour_forecast dictionary
             hour_forecast["city"] = city
+            hour_forecast['shortName'] = shortname
             hour_forecast["startDate"] = start_date
             hour_forecast["start_time"] = start_time
             hour_forecast["endDate"] = end_date
@@ -167,7 +202,7 @@ def refresh_from_api():
         hourly_forecast_working_df.drop(columns=["name", "detailedForecast"], inplace=True)
 
         # Rearange columns of dataframe
-        hourly_forecast_working_df = hourly_forecast_working_df[['responseNumber', 'city', 'latitude', 'longitude','startDateTime', 'startDate', 'startTime', 'endDateTime', 'endDate', 'endTime', 'isDaytime', 'temperature', 'temperatureUnit', 'temperatureTrend', 'windSpeed','hourWindSpeed', 'windSpeedUnit', 'windDirection', 'icon', 'shortForecast', 'retrievalDateTime']]
+        hourly_forecast_working_df = hourly_forecast_working_df[['responseNumber', 'city', 'shortName', 'latitude', 'longitude','startDateTime', 'startDate', 'startTime', 'endDateTime', 'endDate', 'endTime', 'isDaytime', 'temperature', 'temperatureUnit', 'temperatureTrend', 'windSpeed','hourWindSpeed', 'windSpeedUnit', 'windDirection', 'icon', 'shortForecast', 'retrievalDateTime']]
 
         # Copy working dataframe to final dataframe
         hourly_forecast_df = hourly_forecast_working_df
